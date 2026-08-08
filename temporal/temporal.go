@@ -7,29 +7,20 @@ import (
 	"strconv"
 	"strings"
 	"time"
-)
 
-// Resultado representa o resultado padronizado de uma validação ou normalização.
-type Resultado struct {
-	// Valido indica se a entrada passou na validação.
-	Valido bool
-	// Valor contém o dado normalizado ou a entrada válida, conforme a função;
-	// fica vazio quando Valido é false.
-	Valor string
-	// Erro descreve o motivo da rejeição quando Valido é false; caso contrário, fica vazio.
-	Erro string
-}
+	"github.com/simples-apps/normaliza-br/comum"
+)
 
 // ValidarData verifica se uma data está no formato DD/MM/AAAA e é válida no calendário.
 //
 // O parâmetro valor deve estar em "02/01/2006" (ex.: "07/08/2026"). Em caso de sucesso,
 // Resultado.Valor preserva a entrada com trim; em caso de falha, Resultado.Erro é preenchido.
-func ValidarData(valor string) Resultado {
+func ValidarData(valor string) comum.Resultado {
 	valorTrim := strings.TrimSpace(valor)
 	if _, err := time.Parse("02/01/2006", valorTrim); err != nil {
-		return Resultado{Valido: false, Valor: "", Erro: "Data inválida"}
+		return comum.Resultado{Valido: false, Valor: "", Erro: "Data inválida"}
 	}
-	return Resultado{Valido: true, Valor: valorTrim, Erro: ""}
+	return comum.Resultado{Valido: true, Valor: valorTrim, Erro: ""}
 }
 
 // NormalizarData converte uma data no formato brasileiro (DD/MM/AAAA) para ISO 8601 (AAAA-MM-DD).
@@ -63,12 +54,12 @@ func NormalizarHora(valor string) string {
 //
 // O parâmetro valor deve estar em DD/MM/AAAA. Em caso de sucesso, Resultado.Valor
 // fica em AAAA-MM-DD; em caso de falha, devolve o Resultado de ValidarData.
-func NormalizarDataSeValido(valor string) Resultado {
+func NormalizarDataSeValido(valor string) comum.Resultado {
 	resultado := ValidarData(valor)
 	if !resultado.Valido {
 		return resultado
 	}
-	return Resultado{Valido: true, Valor: NormalizarData(valor), Erro: ""}
+	return comum.Resultado{Valido: true, Valor: NormalizarData(valor), Erro: ""}
 }
 
 // NormalizarDataHora junta data e hora em um único texto no formato AAAA-MM-DDTHH:MM:00.
@@ -90,17 +81,17 @@ func NormalizarDataHora(valor string) string {
 // O parâmetro valor deve ter exatamente duas partes separadas por ":" (ex.: "14:30").
 // Em caso de sucesso, Resultado.Valor preserva a entrada com trim; em caso de falha,
 // Resultado.Erro é preenchido. Não valida faixas de 0–23 / 0–59.
-func ValidarHora(valor string) Resultado {
+func ValidarHora(valor string) comum.Resultado {
 	valorTrim := strings.TrimSpace(valor)
 	partes := strings.Split(valorTrim, ":")
 	if len(partes) != 2 {
-		return Resultado{Valido: false, Valor: "", Erro: "Hora inválida"}
+		return comum.Resultado{Valido: false, Valor: "", Erro: "Hora inválida"}
 	}
 	if _, err := strconv.Atoi(partes[0]); err != nil {
-		return Resultado{Valido: false, Valor: "", Erro: "Hora inválida"}
+		return comum.Resultado{Valido: false, Valor: "", Erro: "Hora inválida"}
 	}
 	if _, err := strconv.Atoi(partes[1]); err != nil {
-		return Resultado{Valido: false, Valor: "", Erro: "Hora inválida"}
+		return comum.Resultado{Valido: false, Valor: "", Erro: "Hora inválida"}
 	}
-	return Resultado{Valido: true, Valor: valorTrim, Erro: ""}
+	return comum.Resultado{Valido: true, Valor: valorTrim, Erro: ""}
 }

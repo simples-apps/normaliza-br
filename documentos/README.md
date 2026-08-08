@@ -4,6 +4,8 @@
 
 Normalização e validação estrutural de documentos oficiais brasileiros, alinhadas à Receita Federal.
 
+O retorno de validação usa [`comum.Resultado`](../comum/README.md).
+
 **Import:** `github.com/simples-apps/normaliza-br/documentos`
 
 ## Escopo
@@ -60,11 +62,11 @@ Máscara de referência: `AA.AAA.AAA/AAAA-DV`
 | Função | Retorno |
 |--------|---------|
 | `NormalizarCPF(valor string)` | `string` |
-| `ValidarCPF(valor string)` | `Resultado` |
-| `NormalizarCPFSeValido(valor string)` | `Resultado` |
+| `ValidarCPF(valor string)` | `comum.Resultado` |
+| `NormalizarCPFSeValido(valor string)` | `comum.Resultado` |
 | `NormalizarCNPJ(valor string)` | `string` |
-| `ValidarCNPJ(valor string)` | `Resultado` |
-| `NormalizarCNPJSeValido(valor string)` | `Resultado` |
+| `ValidarCNPJ(valor string)` | `comum.Resultado` |
+| `NormalizarCNPJSeValido(valor string)` | `comum.Resultado` |
 | `NormalizarDocumento(valor string)` | `string` |
 
 ## Referências

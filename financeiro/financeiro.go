@@ -5,17 +5,9 @@ package financeiro
 import (
 	"regexp"
 	"strings"
-)
 
-// Resultado representa o resultado padronizado de uma validação ou normalização.
-type Resultado struct {
-	// Valido indica se a entrada passou na validação.
-	Valido bool
-	// Valor contém o dado normalizado quando Valido é true; caso contrário, fica vazio.
-	Valor string
-	// Erro descreve o motivo da rejeição quando Valido é false; caso contrário, fica vazio.
-	Erro string
-}
+	"github.com/simples-apps/normaliza-br/comum"
+)
 
 // ValidarMoeda verifica se um valor monetário possui estrutura básica aceitável.
 //
@@ -23,15 +15,15 @@ type Resultado struct {
 // pontos de milhar, vírgula decimal e sinal negativo (ex.: "R$ 1.234,56").
 // Em caso de sucesso, Resultado.Valor preserva a entrada já com trim; em caso de
 // falha, Resultado.Erro é preenchido.
-func ValidarMoeda(valor string) Resultado {
+func ValidarMoeda(valor string) comum.Resultado {
 	valorTrim := strings.TrimSpace(valor)
 	if valorTrim == "" {
-		return Resultado{Valido: false, Valor: "", Erro: "Valor monetário inválido"}
+		return comum.Resultado{Valido: false, Valor: "", Erro: "Valor monetário inválido"}
 	}
 	if regexp.MustCompile(`^[0-9.,R$\s-]+$`).MatchString(valorTrim) {
-		return Resultado{Valido: true, Valor: valorTrim, Erro: ""}
+		return comum.Resultado{Valido: true, Valor: valorTrim, Erro: ""}
 	}
-	return Resultado{Valido: false, Valor: "", Erro: "Valor monetário inválido"}
+	return comum.Resultado{Valido: false, Valor: "", Erro: "Valor monetário inválido"}
 }
 
 // NormalizarMoeda converte um valor monetário brasileiro para string numérica com ponto decimal.
@@ -54,10 +46,10 @@ func NormalizarMoeda(valor string) string {
 // O parâmetro valor é o texto monetário a processar. Em caso de sucesso, Resultado.Valor
 // contém a forma numérica com ponto decimal; em caso de falha, devolve o Resultado
 // de ValidarMoeda.
-func NormalizarMoedaSeValido(valor string) Resultado {
+func NormalizarMoedaSeValido(valor string) comum.Resultado {
 	resultado := ValidarMoeda(valor)
 	if !resultado.Valido {
 		return resultado
 	}
-	return Resultado{Valido: true, Valor: NormalizarMoeda(valor), Erro: ""}
+	return comum.Resultado{Valido: true, Valor: NormalizarMoeda(valor), Erro: ""}
 }

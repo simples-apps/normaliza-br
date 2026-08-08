@@ -4,17 +4,9 @@ package documentos
 
 import (
 	"strings"
-)
 
-// Resultado representa o resultado padronizado de uma validação ou normalização.
-type Resultado struct {
-	// Valido indica se a entrada passou na validação.
-	Valido bool
-	// Valor contém o dado normalizado quando Valido é true; caso contrário, fica vazio.
-	Valor string
-	// Erro descreve o motivo da rejeição quando Valido é false; caso contrário, fica vazio.
-	Erro string
-}
+	"github.com/simples-apps/normaliza-br/comum"
+)
 
 // NormalizarCPF remove caracteres não numéricos de um CPF.
 //
@@ -65,18 +57,18 @@ func NormalizarDocumento(valor string) string {
 //
 // O parâmetro valor aceita CPF com ou sem máscara. Em caso de sucesso, Resultado.Valor
 // contém os 11 dígitos normalizados; em caso de falha, Resultado.Erro é preenchido.
-func ValidarCPF(valor string) Resultado {
+func ValidarCPF(valor string) comum.Resultado {
 	valorLimpo := normalizarDigitos(valor)
 	if len(valorLimpo) != 11 || digitosIguais(valorLimpo) || !cpfDigitosValidos(valorLimpo) {
-		return Resultado{Valido: false, Valor: "", Erro: "CPF inválido"}
+		return comum.Resultado{Valido: false, Valor: "", Erro: "CPF inválido"}
 	}
-	return Resultado{Valido: true, Valor: valorLimpo, Erro: ""}
+	return comum.Resultado{Valido: true, Valor: valorLimpo, Erro: ""}
 }
 
 // NormalizarCPFSeValido normaliza e devolve o CPF somente quando ele é válido.
 //
 // O parâmetro valor aceita CPF com ou sem máscara. Equivale a ValidarCPF(valor).
-func NormalizarCPFSeValido(valor string) Resultado {
+func NormalizarCPFSeValido(valor string) comum.Resultado {
 	return ValidarCPF(valor)
 }
 
@@ -88,19 +80,19 @@ func NormalizarCPFSeValido(valor string) Resultado {
 // O parâmetro valor aceita CNPJ com ou sem máscara. Em caso de sucesso, Resultado.Valor
 // contém as 14 posições normalizadas em maiúsculas; em caso de falha, Resultado.Erro
 // é preenchido.
-func ValidarCNPJ(valor string) Resultado {
+func ValidarCNPJ(valor string) comum.Resultado {
 	valorLimpo := NormalizarCNPJ(valor)
 	if len(valorLimpo) != 14 || !cnpjFormatoValido(valorLimpo) || !cnpjDigitosValidos(valorLimpo) {
-		return Resultado{Valido: false, Valor: "", Erro: "CNPJ inválido"}
+		return comum.Resultado{Valido: false, Valor: "", Erro: "CNPJ inválido"}
 	}
-	return Resultado{Valido: true, Valor: valorLimpo, Erro: ""}
+	return comum.Resultado{Valido: true, Valor: valorLimpo, Erro: ""}
 }
 
 // NormalizarCNPJSeValido normaliza e devolve o CNPJ somente quando ele é válido.
 //
 // O parâmetro valor aceita CNPJ numérico ou alfanumérico, com ou sem máscara.
 // Equivale a ValidarCNPJ(valor).
-func NormalizarCNPJSeValido(valor string) Resultado {
+func NormalizarCNPJSeValido(valor string) comum.Resultado {
 	return ValidarCNPJ(valor)
 }
 

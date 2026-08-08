@@ -4,6 +4,8 @@
 
 Normalização e validação de dados geográficos brasileiros: CEP e unidade federativa (UF).
 
+O retorno de validação usa [`comum.Resultado`](../comum/README.md).
+
 **Import:** `github.com/simples-apps/normaliza-br/localizacao`
 
 ## Escopo
@@ -45,10 +47,10 @@ resultado := localizacao.ValidarEstado("SP")
 | Função | Retorno |
 |--------|---------|
 | `NormalizarCEP(valor string)` | `string` |
-| `ValidarCEP(valor string)` | `Resultado` |
-| `NormalizarCEPSeValido(valor string)` | `Resultado` |
+| `ValidarCEP(valor string)` | `comum.Resultado` |
+| `NormalizarCEPSeValido(valor string)` | `comum.Resultado` |
 | `NormalizarEstado(valor string)` | `string` |
-| `ValidarEstado(valor string)` | `Resultado` |
+| `ValidarEstado(valor string)` | `comum.Resultado` |
 
 ## Referências
 

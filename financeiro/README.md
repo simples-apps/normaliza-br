@@ -4,6 +4,8 @@
 
 Normalização e validação básica de valores monetários no formato brasileiro.
 
+O retorno de validação usa [`comum.Resultado`](../comum/README.md).
+
 **Import:** `github.com/simples-apps/normaliza-br/financeiro`
 
 ## Escopo
@@ -39,8 +41,8 @@ Ordem da normalização:
 | Função | Retorno |
 |--------|---------|
 | `NormalizarMoeda(valor string)` | `string` |
-| `ValidarMoeda(valor string)` | `Resultado` |
-| `NormalizarMoedaSeValido(valor string)` | `Resultado` |
+| `ValidarMoeda(valor string)` | `comum.Resultado` |
+| `NormalizarMoedaSeValido(valor string)` | `comum.Resultado` |
 
 ## Referências
 

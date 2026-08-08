@@ -4,6 +4,8 @@
 
 Normalização e validação básica de meios de comunicação: telefone e e-mail.
 
+O retorno de validação usa [`comum.Resultado`](../comum/README.md).
+
 **Import:** `github.com/simples-apps/normaliza-br/contatos`
 
 ## Escopo
@@ -40,8 +42,8 @@ contatos.NormalizarEmailSeValido("emailinvalido") // inválido
 |--------|---------|
 | `NormalizarTelefone(valor string)` | `string` |
 | `NormalizarEmail(valor string)` | `string` |
-| `ValidarEmail(valor string)` | `Resultado` |
-| `NormalizarEmailSeValido(valor string)` | `Resultado` |
+| `ValidarEmail(valor string)` | `comum.Resultado` |
+| `NormalizarEmailSeValido(valor string)` | `comum.Resultado` |
 
 ## Referências
 

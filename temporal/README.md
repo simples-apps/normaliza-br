@@ -4,6 +4,8 @@
 
 Normalização e validação de datas e horas no padrão brasileiro, com saída em formatos ISO comuns.
 
+O retorno de validação usa [`comum.Resultado`](../comum/README.md).
+
 **Import:** `github.com/simples-apps/normaliza-br/temporal`
 
 ## Escopo
@@ -53,10 +55,10 @@ temporal.NormalizarDataHora("07/08/2026 14:30") // "2026-08-07T14:30:00"
 | Função | Retorno |
 |--------|---------|
 | `NormalizarData(valor string)` | `string` |
-| `ValidarData(valor string)` | `Resultado` |
-| `NormalizarDataSeValido(valor string)` | `Resultado` |
+| `ValidarData(valor string)` | `comum.Resultado` |
+| `NormalizarDataSeValido(valor string)` | `comum.Resultado` |
 | `NormalizarHora(valor string)` | `string` |
-| `ValidarHora(valor string)` | `Resultado` |
+| `ValidarHora(valor string)` | `comum.Resultado` |
 | `NormalizarDataHora(valor string)` | `string` |
 
 ## Referências

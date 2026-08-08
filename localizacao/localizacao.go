@@ -5,17 +5,9 @@ package localizacao
 import (
 	"regexp"
 	"strings"
-)
 
-// Resultado representa o resultado padronizado de uma validação ou normalização.
-type Resultado struct {
-	// Valido indica se a entrada passou na validação.
-	Valido bool
-	// Valor contém o dado normalizado quando Valido é true; caso contrário, fica vazio.
-	Valor string
-	// Erro descreve o motivo da rejeição quando Valido é false; caso contrário, fica vazio.
-	Erro string
-}
+	"github.com/simples-apps/normaliza-br/comum"
+)
 
 // NormalizarCEP remove caracteres de formatação de um CEP.
 //
@@ -29,24 +21,24 @@ func NormalizarCEP(valor string) string {
 //
 // O parâmetro valor aceita CEP com ou sem máscara. Em caso de sucesso, Resultado.Valor
 // contém os 8 caracteres normalizados; em caso de falha, Resultado.Erro é preenchido.
-func ValidarCEP(valor string) Resultado {
+func ValidarCEP(valor string) comum.Resultado {
 	valorLimpo := NormalizarCEP(valor)
 	if len(valorLimpo) != 8 {
-		return Resultado{Valido: false, Valor: "", Erro: "CEP inválido"}
+		return comum.Resultado{Valido: false, Valor: "", Erro: "CEP inválido"}
 	}
-	return Resultado{Valido: true, Valor: valorLimpo, Erro: ""}
+	return comum.Resultado{Valido: true, Valor: valorLimpo, Erro: ""}
 }
 
 // NormalizarCEPSeValido normaliza e devolve o CEP somente quando ele é válido.
 //
 // O parâmetro valor aceita CEP com ou sem máscara. Em caso de falha, devolve o
 // mesmo Resultado de ValidarCEP.
-func NormalizarCEPSeValido(valor string) Resultado {
+func NormalizarCEPSeValido(valor string) comum.Resultado {
 	resultado := ValidarCEP(valor)
 	if !resultado.Valido {
 		return resultado
 	}
-	return Resultado{Valido: true, Valor: resultado.Valor, Erro: ""}
+	return comum.Resultado{Valido: true, Valor: resultado.Valor, Erro: ""}
 }
 
 // NormalizarEstado padroniza o nome ou a sigla de um estado para a UF brasileira.
@@ -101,13 +93,13 @@ func NormalizarEstado(valor string) string {
 //
 // O parâmetro valor deve ser a sigla do estado (ex.: "SP" ou "sp"). Nomes por extenso
 // são rejeitados. Em caso de sucesso, Resultado.Valor contém a UF em maiúsculas.
-func ValidarEstado(valor string) Resultado {
+func ValidarEstado(valor string) comum.Resultado {
 	estado := strings.ToUpper(strings.TrimSpace(valor))
 	if len(estado) != 2 {
-		return Resultado{Valido: false, Valor: "", Erro: "Estado inválido"}
+		return comum.Resultado{Valido: false, Valor: "", Erro: "Estado inválido"}
 	}
 	if regexp.MustCompile(`^[A-Z]{2}$`).MatchString(estado) {
-		return Resultado{Valido: true, Valor: estado, Erro: ""}
+		return comum.Resultado{Valido: true, Valor: estado, Erro: ""}
 	}
-	return Resultado{Valido: false, Valor: "", Erro: "Estado inválido"}
+	return comum.Resultado{Valido: false, Valor: "", Erro: "Estado inválido"}
 }

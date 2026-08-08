@@ -1,36 +1,40 @@
 # Normaliza BR
 
-Biblioteca Go modular para normalização e validação de dados brasileiros.
+Biblioteca Go para normalização e validação de dados brasileiros.
 
 Repositório: [github.com/simples-apps/normaliza-br](https://github.com/simples-apps/normaliza-br)
 
-Cada pacote é um módulo Go independente (`github.com/simples-apps/normaliza-br/<pacote>`): importe só o que precisar, sem puxar o restante do projeto.
+Há **um único módulo** Go na raiz. Cada pasta é um **pacote** independente: você importa só o que precisa (`documentos`, `temporal`, etc.) sem escrever o código dos demais no seu projeto.
 
 ## Por que existe
 
 Cadastros, APIs e integrações no Brasil lidam com formatos inconsistentes — CPF com e sem máscara, CNPJ alfanumérico, CEP pontuado, valores em `R$`, datas `DD/MM/AAAA`. Este repositório concentra regras de limpeza e validação estrutural para reduzir retrabalho e inconsistências.
 
-## Módulos
+## Pacotes
 
-| Módulo | Pacote | Escopo |
-|--------|--------|--------|
-| [Documentos](documentos/README.md) | `documentos` | CPF e CNPJ (numérico e alfanumérico) |
-| [Localização](localizacao/README.md) | `localizacao` | CEP e UF |
-| [Contatos](contatos/README.md) | `contatos` | Telefone e e-mail |
-| [Financeiro](financeiro/README.md) | `financeiro` | Valores monetários |
-| [Temporal](temporal/README.md) | `temporal` | Data e hora |
+| Pacote | Escopo |
+|--------|--------|
+| [comum](comum/README.md) | Tipos compartilhados (`Resultado`) |
+| [documentos](documentos/README.md) | CPF e CNPJ (numérico e alfanumérico) |
+| [localizacao](localizacao/README.md) | CEP e UF |
+| [contatos](contatos/README.md) | Telefone e e-mail |
+| [financeiro](financeiro/README.md) | Valores monetários |
+| [temporal](temporal/README.md) | Data e hora |
 
 ## Instalação
 
 ```bash
-go get github.com/simples-apps/normaliza-br/documentos
-go get github.com/simples-apps/normaliza-br/localizacao
-go get github.com/simples-apps/normaliza-br/contatos
-go get github.com/simples-apps/normaliza-br/financeiro
-go get github.com/simples-apps/normaliza-br/temporal
+go get github.com/simples-apps/normaliza-br@latest
 ```
 
-No desenvolvimento local, o repositório usa um `go.work` com todos os módulos.
+Depois importe apenas os pacotes necessários:
+
+```go
+import (
+	"github.com/simples-apps/normaliza-br/comum"
+	"github.com/simples-apps/normaliza-br/documentos"
+)
+```
 
 ## Uso rápido
 
@@ -43,7 +47,7 @@ import (
 	"github.com/simples-apps/normaliza-br/temporal"
 )
 
-cpf := documentos.NormalizarCPF("123.456.789-09")
+cpf := documentos.NormalizarCPF("529.982.247-25")
 cnpj := documentos.ValidarCNPJ("12.ABC.345/01DE-35")
 cep := localizacao.NormalizarCEP("13.080-300")
 email := contatos.NormalizarEmail(" Usuario@Exemplo.COM ")
@@ -58,10 +62,14 @@ Os pacotes seguem o mesmo padrão:
 | Função | Comportamento |
 |--------|----------------|
 | `NormalizarX` | Limpa/padroniza e devolve `string` |
-| `ValidarX` | Valida e devolve `Resultado` (`Valido`, `Valor`, `Erro`) |
+| `ValidarX` | Valida e devolve `comum.Resultado` (`Valido`, `Valor`, `Erro`) |
 | `NormalizarXSeValido` | Normaliza só se a validação passar |
 
+O tipo `Resultado` vive em [comum](comum/README.md) e é reutilizado por todos os demais:
+
 ```go
+import "github.com/simples-apps/normaliza-br/comum"
+
 type Resultado struct {
 	Valido bool
 	Valor  string
@@ -72,13 +80,7 @@ type Resultado struct {
 ## Testes
 
 ```bash
-go test ./documentos ./localizacao ./contatos ./financeiro ./temporal
-```
-
-Ou, dentro de cada módulo:
-
-```bash
-cd documentos && go test ./...
+go test ./...
 ```
 
 ## Referências
